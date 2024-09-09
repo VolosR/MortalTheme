@@ -1,0 +1,182 @@
+import synthesizer
+backlight(0.8)
+
+const NOTE_OFF = true# true..false
+control=[1,3,3, 1,5,0, 0,4,4,  0,4,0,  0,3,0]
+controlMax=[1,6,6, 1,6,6,  1,6,6,  1,6,6, 1,4,1]
+
+volumes=[50,60,70,80,90,100,110]
+instruments=[0,80,81,90,94,99,100]
+intervals=[115,110,115,100,95,90,85]
+
+posX=0
+posY=0
+pos=0
+
+melody=[69,0,69,0,72,0,69,0,74,0,69,0,76,0,74,0,72,0,72,0,76,0,72,0,79,0,72,0,76,0,72,0,67,0,67,0,71,0,67,0,72,0,67,0,74,0,72,0,65,0,65,0,69,0,65,0,72,0,65,0,72,0,71,0,69,0,0,69,0,0,69,0,0,69,0,0,67,0,72,0,69,0,0,69,0,0,69,0,0,69,0,0,67,0,64,0,69,0,0,69,0,0,69,0,0,69,0,0,67,0,72,0,69,0,0,69,0,0,69,0,69,69,0,69,69,0,0,0,69,76,0,69,72,0,69,70,0,69,72,0,70,69,67,0,69,76,0,69,72,0,69,70,0,69,72,0,70,69,67,0,69,76,0,69,72,0,69,70,0,69,72,0,70,69,67,0, 69,76,0,69,72,0,67,67,0,67,69,0,69,0,0,0]
+second=[57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,57,57,57,57,57,57,55,55,  57,0,0,57,0,0,55,0,57,57,57,0,55,0,60,0,57,0,0,57,0,0,55,0,57,57,57,0,55,0,52,0,57,0,0,57,0,0,55,0,57,57,57,0,55,0,60,0,57,0,0,57,0,0,55,0,57,57,0,57,57,0,0,0, 57,0,0,57,0,0,55,0,57,57,57,0,55,0,60,0,57,0,0,57,0,0,55,0,57,57,57,0,55,0,52,0,57,0,0,57,0,0,55,0,57,57,57,0,55,0,60,0,57,0,0,57,0,0,55,0,57,57,0,57,57,0,0,0]
+kick=[ 35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0, 35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,  ]
+snare=[ 0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0, 35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0,0,0,35,0  ]
+
+part=1
+nn=part*64-64
+chosen=0
+beat=0
+
+masterVolume(110)
+setInterval(100)
+
+def updateScreen():
+    clear()
+
+    noStroke()
+    fill(245,204,0)
+    for n in 16:
+        if n==beat
+            fill(245,204,0)
+            drawRectangle(104+n*8, 35, 5, 10)
+        else
+            fill(125,844,0)
+            drawRectangle(104+n*8, 35, 5, 10)
+    
+    for m in 3:
+        if m==part-1
+            fill(62,191,234)
+            drawRectangle(5+m*20,60,16,14)
+        else
+            fill(14,78,99)
+            drawRectangle(5+m*20,60,16,14)
+
+    
+    fill(17,87,111)
+    drawRectangle(174, 28, 58, 4)
+    fill(8,50,60)
+    drawRectangle(5,110,60,14)
+
+    textFont(3)
+    drawText(3,1,"OXO")
+    textFont(1)
+    drawText(104,5,"Synth")
+    
+    textFont(0)
+    stroke(170,170,170)
+    drawText(76,56,"PLAY")
+    drawText(136,56,"VOL")
+    drawText(194,56,"BMP")
+    drawText(182,8,"VOLOS")
+
+    stroke(130,130,130)
+    drawText(76,105,"PLAY")
+    drawText(136,105,"VOL")
+    drawText(194,105,"INS")
+
+    drawLine(4,148,230,148)
+    drawLine(4,174,230,174)
+    drawLine(4,200,230,200)
+   
+    stroke(180,180,180)
+    drawText(5,80,"MASTER")
+    drawText(5,126,"MELODY")
+    drawText(5,152,"FILLER")
+    drawText(5,178,"KICK")
+    drawText(5,204,"SNARE")
+
+  
+
+    stroke(240,240,240)
+
+    for j in 5:
+        for i in 3:
+            if j==0
+                drawText(90+i*56,80+j*26,control[j*3+i]) 
+            else
+                drawText(90+i*56,100+j*26,control[j*3+i]) 
+              
+    noStroke()
+    for k in 5:
+        if k==0
+            if control[0]==1
+                fill(0,200,30)
+            else
+                fill(200,12,0)
+            drawRectangle(74, 84, 6, 13)
+        else
+            if control[k*3]==1
+                fill(0,200,30)
+            else
+                fill(200,12,0)
+            drawRectangle(74, 104+k*26, 6, 13)
+
+
+
+    noFill()
+    stroke(240,240,240)
+    if posY==0
+        drawRectangle(84+posX*56, 76, 24, 26)
+    else
+        drawRectangle(84+posX*56, 96+posY*26, 24, 26)
+    update()
+
+updateScreen()
+
+def onClick():
+    b:buttons = getButtons()
+    if b.middle:
+        control[posY*3+posX]++
+        if control[posY*3+posX]>controlMax[posY*3+posX]
+            control[posY*3+posX]=0
+        if posY==0 and posX==2
+            setInterval(intervals[control[posY*3+posX]])
+         if posY==0 and posX==1
+            masterVolume(volumes[control[1]])
+
+    elif b.right:
+        posX++
+        if posX>2
+            posX=0
+    elif b.left:
+        control[0]=1
+        part++
+        if part==4
+            part=1
+        nn=(part*64)-64
+    elif b.down
+        posY++
+        posX=0
+        if posY>4
+            posY=0
+    elif b.up:
+        posY--
+        posX=0
+        if posY<0
+            posY=4
+  
+def myNote(n:int, cha:int, ins:int, velo:int):
+    channel(cha)
+    instrumentSet(0)
+    instrument(ins)
+    noteOn(n,velo)
+    if NOTE_OFF: noteOff(n)
+
+def onTimer()
+    if control[0]==1
+        if control[3]==1
+            myNote(melody[nn],0,instruments[control[5]],volumes[control[4]])
+        if control[6]==1
+            myNote(second[nn],0,instruments[control[8]],volumes[control[7]])
+        if control[9]==1
+            myNote(kick[nn]+chosen,9,0,volumes[control[10]])
+        if control[12]==1
+            myNote(snare[nn]+4,9,36,volumes[control[13]])
+
+        nn++
+        if nn==part*64
+            nn=(part*64)-64
+        
+        if nn%4==0
+            beat++
+            if beat==16
+                beat=0
+    updateScreen()
+
+allNotesOff()
